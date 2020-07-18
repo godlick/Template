@@ -1,0 +1,92 @@
+##################################################
+		安装与配置Git
+##################################################
+
+一.安装git
+	sudo apt-get install git //安装git
+	git version  //查看git版本号
+	sudo apt-get remove git  //完全卸载git
+
+二.配置git
+	git config --global user.name "XXXX"  
+	git config --global user.email  "XXXXXXXXXX"  
+
+	git config --list  //查看配置内容
+
+	ssh-keygen -t rsa -C "用户邮箱"  //配置Git的私钥和公钥
+	cd ~/.ssh/   +   ls  //两个命令组合会看到 id_rsa和 id_rsa.pub
+	vi id_rsa.pub  //打开公钥，将公钥上传GitHub的SSH keys上
+	ssh git@github.com  //验证是否配置成功
+	注：添加公钥后，服务器就会认为你这个客户端为可信任。你则可以访问这个服务器了
+
+三.git的使用
+	$git clone https://github.com/username/Spoon-Knife.git  #从repo中克隆到本地
+	$cd Spoon-Knife						#进入该文件夹
+	$git add filename.py 　　　　　　　　　　　　　　　　　 #添加文件到版本库
+	$git commit -m 'add filename.py to src' 　　　　　　　　#提交，产生版本记录，注意代码依然在本地
+	$vim README.md　　　　　　　　　　　　　　　　　　　　　#修改Spoon-Knife中的README.md文件内容
+	$git commit -m 'modify the README.md' 　　　　　　　　　#提交，产生版本记录，注意代码依然在本地
+	$git [remote] rm filename1.py　　　　　　　　　　　　　 #删除repo中的filename1.py文件
+	$git commit -m 'delete filename1.py' 　　　　　　　　　 #提交，产生版本记录，注意代码依然在本地
+	$git push origin 　　　　　　　　　　　　　　　　　　　 #将修改提交到github上
+
+四.常用git命令
+	git help　　　　　　　　　　　　　　　　　　　　　　　　#可查看git的常用命令
+	git config --global user.name "Your Name Here"　　　　　#设置commit的署名
+	git config --global user.email "your_email@example.com" #设置commit的email
+	git config [--local|--global|--system] --list/-l　　　　#查看本地的global信息
+	git config [--local|--global|--system] --unset[-all] user.name　#删除user.name信息。如果user.name对应多个值，可用unset-all来删除
+	git remote add XXX https://github.com/username/repo_name.git　#设置github的连接
+	git clone git://github.com/your_account/aimed_repo.git　#复制一个repo到本地 
+	git remote -v　　　　　　　　　　　　　　　　　　　　　 #查看本地设置的url连接信息 
+	git status　　　　　　　　　　　　　　　　　　　　　　　#查看当前工作的branch 
+	git branch　　　　　　　　　　　　　　　　　　　　　　　#查看本地所有的branch 
+	git branch -a　　　　　　　　　　　　　　　　　　　　　 #查看远程的所有分支 
+	git branch -d branch_name　　　　　　　　　　　　　　　 #删除本地branch_name这一分支 
+	git push origin --delete branch_name　　　　　　　　　　#删除名为branch_name的远程分支 
+	git checkout branch_name　　　　　　　　　　　　　　　　#切换到名为branch_name的分支上 
+	git chechout -b branch_name　　　　　　　　　　　　　　 #在本地新建一个名为branch_nam的分支 
+	git diff test_branch_name　　　　　　　　　　　　　#查看当前branch与test_branch_name中代码的区别 
+	git mv filename newfilename　　　　　　　　　　　　　　 #文件重命名 
+	git push XXX branch_name　　　　　　　　　　　　　　　　#上传指定的branch到远端
+	git pull　　　　　　　　　　　　　　#将远程上的版本与本地版本进行合并，相当于get fetch + git merge 
+	git reset --hard　　　　　　　　　　#将刚才进行的git pull所进行的操作取消，恢复本地版本合并前的原貌
+
+
+五.可能出现的错误及解决方法
+	
+	1）git clone/push时出现错误提示：14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed while accessing ...
+	原因：这是由于ssl认证出问题引起的错误。两种解决方法：
+	a：配置http.sslVerify    		输入命令：git config --global http.sslVerify false
+	b：每次使用clone和push时带上env部分  	输入命令：env GIT_SSL_NO_VERIFY=true git clone https://github.com/XXXX/xxxxx.git
+
+	2）当要push代码到git时，出现提示：
+
+		error:failed to push some refs to ...
+
+		Dealing with “non-fast-forward” errors
+		From time to time you may encounter this error while pushing:
+	原因：（Non-fast-forward）：git仓库中已经有一部分代码，所以它不允许你直接把你的代码覆盖上去
+	a：强推，利用强覆盖的方式用你本地的代码替换git仓库的内容   git push -f
+	b：先把git的东西fetch到你本地然后merge后再push
+		$ git fetch
+		$ git merge
+		这两条命令等价于 	$ git pull 
+		
+		可是，这时候又出现了如下的问题：
+	下面出现的 [branch "master"]是需要明确(.git/config)如下的内容
+		[branch "master"]
+    			remote = origin
+
+    			merge = refs/heads/master
+
+	这等于告诉git2件事:
+
+		1，当你处于master branch, 默认的remote就是origin。
+		2，当你在master branch上使用git pull时，没有指定remote和branch，那么git就会采用默认的remote（也就是origin）来merge在master branch上所有的改变
+
+		如果不想或者不会编辑config文件的话，可以在bush上输入如下命令行：
+			$ git config branch.master.remote origin  
+			$ git config branch.master.merge refs/heads/master  	
+		
+	之后再重新git pull下。最后git push代码。

@@ -1,0 +1,33 @@
+
+############################################
+		GDB调试命令：
+############################################
+	Segmentation fault (core dumped)
+开启GDB段码调试要在编译是加入 -g -rdynamic -ldl
+
+进入GDB调试： gdb ./(可执行程序名)
+
+分析Core文件：
+	ulimit -c  ：查看系统的Core文件的大小限制
+	ulimit -c 1000： 将系统的Core文件的大小限制为512K
+	gdb ./（可执行程序名） core ：分析Core文件并找出错误信息，然后进入GDB调试
+
+GDB调试的常用命令：
+	backtrace（或bt）：        查看各级函数调用及参数（程序运行如果出错，立即执行bt命令，
+				   即可看出出错的堆栈地址及相应的出错代码行。）
+	finish ：                  连续运行到当前函数返回为止，然后停下来等待命令
+	frame（或f）：             帧编号选择栈帧
+	info（或i）：              locals查看当前栈帧局部变量的值
+	list（或l） ：             列出源代码，接着上次的位置往下列，每次列10行list 行号列出
+				   从第几行开始的源代码list 函数名列出某个函数的源代码
+	next（或n）：              执行下一行语句（单步调试）
+	print（或p）：             打印表达式的值，通过表达式可以修改变量的值或者调用函数
+	quit（或q）：              退出gdb调试环境set var修改变量的值
+	start   ：                 开始执行程序，停在main函数第一行语句前面等待命令
+	step（或s）:		   执行下一行语句，如果有函数调用则进入到函数中（单步调试）
+	break(b) n :		   设置断点（n为行号）
+	info breakpoints:	   查看断点信息
+	delete +要取消的断点	   删除断点，参数为要删除的断点号
+	whatis :		   whatis+变量名(查看变量的类型)
+	i r（info registers）：	   打印寄存器值
+	disas/disass/disassemble:  反汇编命令(disas main，显示main函数对应的汇编代码) 
