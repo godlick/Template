@@ -90,3 +90,9 @@
 			$ git config branch.master.merge refs/heads/master  	
 		
 	之后再重新git pull下。最后git push代码。
+
+#######################################
+	yiibai.com/git    //该网站有详细介绍
+#######################################
+
+
