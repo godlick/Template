@@ -25,14 +25,14 @@ int InsertSort(int array[], int left, int right)
 
 int main(void)
 {
-	int array[5] = {10,32,30,9,2};
-	for(int i =0 ;i < 5; i++)
+	int array[] = {44,3,38,5,47,15,36,26,27,2,46,4,19,50,48};
+	for(int i =0 ;i < sizeof(array)/4; i++)
 	{
 		printf("%d " , array[i]);
 	}
 	printf("%c",'\n');
-	InsertSort(array,0,4);
-	for(int i =0 ;i < 5; i++)
+	InsertSort(array,0,sizeof(array)/4 -1);
+	for(int i =0 ;i < sizeof(array)/4; i++)
 	{
 		printf("%d " , array[i]);
 	}
