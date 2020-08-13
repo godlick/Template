@@ -40,7 +40,7 @@ int QuickSort_right(int array[],int left,int right, int temp)
 {
 	if(right == left)
 	{
-		array[left] = temp;
+		array[left] = temp;//轴心选择首元素  //随机快速排序是在区间内随机选取一个元素，与首地址交换，作为轴心
 		return left;
 	}
 	if(array[right] > temp)
