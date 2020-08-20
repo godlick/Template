@@ -1,8 +1,3 @@
-#顶层路径
-ROOT = $(firstword $(subst template, template ,$(PWD)))template
-
-#包含编译规则
-include $(ROOT)/Rules.make
 
 CSOURCES = $(wildcard *.c)
 CPPSOURCES = $(wildcard *.cpp)
@@ -10,10 +5,13 @@ CPPSOURCES = $(wildcard *.cpp)
 targets = $(CSOURCES:.c=)
 targets += $(CPPSOURCES:.cpp=)
 
-all:$(targets)
+Targets = $(targets:Main=)  #Main除外
+
+all:$(Targets)
 
 %:%.c
-	$(CC) $(CFLAGS) $@.c -o $@ 
+#	echo $(Targets) 
+	gcc $@.c $@.h Main.c -o $@ 
 
 %:%.cpp
 	g++ $@.cpp -o $@ 
