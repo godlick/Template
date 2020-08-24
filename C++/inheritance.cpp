@@ -1,5 +1,5 @@
 #include <iostream>
-
+///C++的继承
 using namespace std;
 
 class PARENT
