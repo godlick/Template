@@ -16,8 +16,7 @@ all:$(targets)
 	$(CC) $(CFLAGS) $@.c -o $@ $(LDFLAGS)
 
 %:%.cpp
-	g++ $@.cpp -o $@ 
-
+	g++ $@.cpp -o $@ -lpthread
 clean:
 	rm -f $(targets) $(TEMPFILES) *.o
 
